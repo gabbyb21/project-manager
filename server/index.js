@@ -47,10 +47,10 @@ app.get('/projects/:id', async(req, res) => {
 //update a project
 app.put('/projects/:id', async(req, res) => {
   try {
+    console.log(req.body);
     const { id } = req.params; 
-    const { description } = req.body;
-    const { status } = req.body;
-    const updateProject = await pool.query('UPDATE project SET description = $1 status = $2 WHERE project_id = $3', [description, status, id]);
+    const { description, status } = req.body;
+    const updateProject = await pool.query(`UPDATE project SET description = '${req.body.description}', status = '${req.body.status}' WHERE project_id = ${req.params.id}`);
 
     res.json('Project was updated');
   } catch (err) {
