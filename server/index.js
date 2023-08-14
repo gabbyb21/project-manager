@@ -12,8 +12,8 @@ app.use(express.json());
 //create project
 app.post('/projects', async(req, res) => {
   try {
-    const { title, description, status } = req.body;
-    const newProject = await pool.query('INSERT INTO project (title, description, status) VALUES ($1, $2, $3) RETURNING *', [title, description, status]);
+    const { title, description, status, github_link, app_link } = req.body;
+    const newProject = await pool.query('INSERT INTO project (title, description, status, github_link, app_link) VALUES ($1, $2, $3, $4, $5) RETURNING *', [title, description, status, github_link, app_link]);
 
     res.json(newProject.rows[0]);
   } catch (err) {
@@ -49,8 +49,8 @@ app.put('/projects/:id', async(req, res) => {
   try {
     console.log(req.body);
     const { id } = req.params; 
-    const { description, status } = req.body;
-    const updateProject = await pool.query(`UPDATE project SET description = '${req.body.description}', status = '${req.body.status}' WHERE project_id = ${req.params.id}`);
+    const { description, status, github_link, app_link } = req.body;
+    const updateProject = await pool.query(`UPDATE project SET description = '${req.body.description}', status = '${req.body.status}', github_link = '${req.body.github_link}', app_link = '${req.body.app_link}' WHERE project_id = ${req.params.id}`);
 
     res.json('Project was updated');
   } catch (err) {
